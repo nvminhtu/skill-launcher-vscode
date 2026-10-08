@@ -1,0 +1,333 @@
+{
+  "name": "skill-launcher-for-claude-code",
+  "displayName": "Skill Launcher for Claude Code",
+  "description": "Find, understand and run Claude Code skills from VS Code — per-project skill discovery, usage-ranked favorites and context-aware suggestions sent straight to your Claude terminal.",
+  "version": "0.1.0",
+  "publisher": "tunguyen",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nvminhtu/skill-launcher-vscode"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other",
+    "Snippets"
+  ],
+  "keywords": [
+    "claude",
+    "claude code",
+    "skills",
+    "slash commands",
+    "ai",
+    "agent"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "claudeSkills",
+          "title": "Claude Skills",
+          "icon": "media/sidebar.svg"
+        }
+      ]
+    },
+    "views": {
+      "claudeSkills": [
+        {
+          "id": "claudeSkills.suggested",
+          "name": "Suggested Now"
+        },
+        {
+          "id": "claudeSkills.frequent",
+          "name": "Frequently Used"
+        },
+        {
+          "id": "claudeSkills.all",
+          "name": "All Skills"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "claudeSkills.all",
+        "contents": "No Claude Code skills found.\nSkills are read from `.claude/skills/*/SKILL.md` in this workspace, `~/.claude/skills`, `.claude/commands` and enabled Claude Code plugins.\n[Refresh](command:claudeSkills.refresh)"
+      },
+      {
+        "view": "claudeSkills.suggested",
+        "contents": "Nothing matches your current file or branch yet.\n[Find a skill for a task…](command:claudeSkills.findForTask)"
+      },
+      {
+        "view": "claudeSkills.frequent",
+        "contents": "No skill usage recorded for this workspace in the selected time window."
+      }
+    ],
+    "commands": [
+      {
+        "command": "claudeSkills.pick",
+        "title": "Run a Skill…",
+        "category": "Claude Skills",
+        "icon": "$(play)"
+      },
+      {
+        "command": "claudeSkills.findForTask",
+        "title": "Find a Skill for a Task (ask Claude)…",
+        "category": "Claude Skills",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "claudeSkills.refresh",
+        "title": "Refresh",
+        "category": "Claude Skills",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "claudeSkills.runSkill",
+        "title": "Run in Claude Terminal",
+        "category": "Claude Skills",
+        "icon": "$(play)"
+      },
+      {
+        "command": "claudeSkills.runSkillWithArgs",
+        "title": "Run with Arguments…",
+        "category": "Claude Skills",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "claudeSkills.showDetails",
+        "title": "Show Details",
+        "category": "Claude Skills",
+        "icon": "$(info)"
+      },
+      {
+        "command": "claudeSkills.openSkillFile",
+        "title": "Open Skill File",
+        "category": "Claude Skills",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "claudeSkills.copyCommand",
+        "title": "Copy Slash Command",
+        "category": "Claude Skills",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "claudeSkills.askFit",
+        "title": "Ask Claude: Does This Skill Fit Right Now?",
+        "category": "Claude Skills",
+        "icon": "$(question)"
+      },
+      {
+        "command": "claudeSkills.createRulesFile",
+        "title": "Create Project Suggestion Rules File",
+        "category": "Claude Skills"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "claudeSkills.pick",
+          "when": "view =~ /^claudeSkills\\./",
+          "group": "navigation@1"
+        },
+        {
+          "command": "claudeSkills.findForTask",
+          "when": "view =~ /^claudeSkills\\./",
+          "group": "navigation@2"
+        },
+        {
+          "command": "claudeSkills.refresh",
+          "when": "view =~ /^claudeSkills\\./",
+          "group": "navigation@3"
+        },
+        {
+          "command": "claudeSkills.createRulesFile",
+          "when": "view == claudeSkills.suggested"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "claudeSkills.runSkill",
+          "when": "viewItem == skill",
+          "group": "inline@1"
+        },
+        {
+          "command": "claudeSkills.showDetails",
+          "when": "viewItem == skill",
+          "group": "inline@2"
+        },
+        {
+          "command": "claudeSkills.runSkillWithArgs",
+          "when": "viewItem == skill",
+          "group": "1_run@1"
+        },
+        {
+          "command": "claudeSkills.askFit",
+          "when": "viewItem == skill",
+          "group": "1_run@2"
+        },
+        {
+          "command": "claudeSkills.openSkillFile",
+          "when": "viewItem == skill",
+          "group": "2_file@1"
+        },
+        {
+          "command": "claudeSkills.copyCommand",
+          "when": "viewItem == skill",
+          "group": "2_file@2"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "claudeSkills.runSkill",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.runSkillWithArgs",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.showDetails",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.openSkillFile",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.copyCommand",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.askFit",
+          "when": "false"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "claudeSkills.pick",
+        "key": "ctrl+alt+k",
+        "mac": "cmd+alt+k"
+      }
+    ],
+    "configuration": {
+      "title": "Skill Launcher for Claude Code",
+      "properties": {
+        "claudeSkills.clickAction": {
+          "type": "string",
+          "enum": [
+            "run",
+            "details"
+          ],
+          "enumDescriptions": [
+            "Clicking a skill sends it to the Claude terminal.",
+            "Clicking a skill opens its detail panel."
+          ],
+          "default": "run",
+          "description": "What happens when you click a skill in the sidebar."
+        },
+        "claudeSkills.autoSubmit": {
+          "type": "boolean",
+          "default": false,
+          "description": "Press Enter automatically after typing the slash command into a running Claude terminal. When off, the command is typed and you review it before pressing Enter."
+        },
+        "claudeSkills.promptForArgs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ask for arguments before running a skill that declares an argument-hint or has been run with arguments before."
+        },
+        "claudeSkills.terminalNamePattern": {
+          "type": "string",
+          "default": "claude",
+          "description": "Case-insensitive regular expression used to recognise terminals running Claude Code."
+        },
+        "claudeSkills.claudePath": {
+          "type": "string",
+          "default": "claude",
+          "description": "Path to the Claude Code CLI, used to start new sessions and for the 'Ask Claude' features."
+        },
+        "claudeSkills.askModel": {
+          "type": "string",
+          "default": "haiku",
+          "description": "Model alias passed to `claude -p --model` for 'Ask Claude' features. Leave empty to use your Claude Code default."
+        },
+        "claudeSkills.usageWindowDays": {
+          "type": "number",
+          "default": 30,
+          "minimum": 1,
+          "description": "How many days of Claude Code history to count for 'Frequently Used'."
+        },
+        "claudeSkills.maxSuggestions": {
+          "type": "number",
+          "default": 7,
+          "minimum": 1,
+          "description": "Maximum number of skills shown in 'Suggested Now'."
+        },
+        "claudeSkills.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the top suggested skill in the status bar."
+        },
+        "claudeSkills.includePluginSkills": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include skills from enabled Claude Code plugins."
+        },
+        "claudeSkills.rules": {
+          "type": "array",
+          "default": [],
+          "markdownDescription": "Extra suggestion rules. Each rule: `{ \"skills\": [\"run-unit-test\"], \"fileGlob\": \"**/*.spec.ts\", \"branch\": \"^feat/\", \"dirty\": true, \"reason\": \"Editing a spec\" }`. All given conditions must match. Teams can also commit rules to `.claude/skill-launcher.json`.",
+          "items": {
+            "type": "object",
+            "required": [
+              "skills"
+            ],
+            "properties": {
+              "skills": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "fileGlob": {
+                "type": "string"
+              },
+              "branch": {
+                "type": "string"
+              },
+              "dirty": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test out/test/*.test.js",
+    "icon": "node scripts/make-icon.js",
+    "package": "vsce package --no-dependencies",
+    "install-local": "vsce package --no-dependencies -o skill-launcher.vsix && code --install-extension skill-launcher.vsix --force"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "~1.90.0",
+    "@vscode/vsce": "^3.2.0",
+    "typescript": "^5.5.0"
+  }
+}

@@ -1,0 +1,26 @@
+# Push a tag like v0.1.1 → tests run, the .vsix is built and attached to a GitHub Release.
+name: Release VSIX
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npx vsce package --no-dependencies -o skill-launcher-${{ github.ref_name }}.vsix
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: skill-launcher-${{ github.ref_name }}.vsix
+          generate_release_notes: true
